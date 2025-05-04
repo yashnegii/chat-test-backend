@@ -16,7 +16,7 @@ export const loginPostHandler = async (request, response) => {
       sameSite: "lax", 
       secure: false, 
     });
-    response.status(200).json("Login Successfull")
+    response.status(200).json({token: token, userId: request.body.email})
   };
 };
 
