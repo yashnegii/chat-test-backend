@@ -1,9 +1,10 @@
 import {chatPostHandler} from "../controllers/chatController.js";
 import messageSchema from "../models/messageSchema.js";
+import user from "../models/userSchema.js";
 
 export function chatEvents(io, socket) {
     socket.on("message",async (data)=>{
-        console.log("message", data)
+        // console.log("message", data)
         let response = await chatPostHandler(data)
         // console.log("response", response)
         socket.to(response.roomId).emit("messageforwarded", {response: response.message,roomId : response.roomId})
@@ -26,5 +27,12 @@ export function chatEvents(io, socket) {
 
         // const messages = await messageSchema.find({roomId: acitveRoom})
         socket.emit("initalMessageGet", message)
+    })
+
+    socket.on('userConnected', async(email)=>{
+        console.log("user connected", email)
+        const users = await user.find({});
+        const userList = users.filter((user)=> email != user.email)
+        socket.emit('userList', userList)
     })
 }

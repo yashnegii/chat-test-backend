@@ -20,6 +20,20 @@ export const loginPostHandler = async (request, response) => {
   };
 };
 
+// export const signupPostHandler = (data) => {
+//   return new Promise ( async (resolve, reject)=>{
+//     const { email, password } = data;
+//     const exist = await User.exists({ email });
+//     if (!exist) {
+//       await User.create({ email: email, password: password }); 
+//       resolve({ success: "signup success"});
+//     } else {
+//       reject({ message: "user already exists" });
+//     }
+//   })
+// }
+
+
 export const signupPostHandler = async (request, response) => {
   try {
     const { email, password } = request.body;
@@ -28,6 +42,7 @@ export const signupPostHandler = async (request, response) => {
 
     if (!exist) {
       await User.create({ email : email, password: password }); // consider hashing password in production
+      
       return response.status(200).json({ success: "signup success" });
     } else {
       return response.status(403).json({ message: "user already exists" });

@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.js";
 import chatRoutes from "./routes/chat.js";
 import cookieParser from "cookie-parser";
 import { chatEvents } from "./events/chatEvents.js";
+import { userEvents } from "./events/userEvent.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -34,9 +35,12 @@ const io = new Server(server, {
 
 
 
+
 io.on("connection", (socket) => {
   console.log("✅ Connected to socket server:", socket.id);  
+
   chatEvents(io, socket);
+  userEvents(io, socket);
 });
 
 
